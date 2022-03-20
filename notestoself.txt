@@ -1,0 +1,13 @@
+check nav bar
+
+ Get --- to fix/check auth methods
+
+YAML API standards
+
+
+added getURL to UTIL.js 
+
+<<---------TO DO LIST--------->>>>
+
+fix/implement add function in api
+change fields to sliders

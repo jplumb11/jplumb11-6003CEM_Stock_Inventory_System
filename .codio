@@ -1,0 +1,13 @@
+
+{
+	"commands": {
+        "Run website": "deno run --allow-all --unstable index.js",
+        "Run DB": "mysql -u root -p website",
+        "Reset DB": "mysql -u root -p website < stock.sql"
+    },
+	"preview": {
+		"Live Website": "https://{{domain8080}}/{{index}}",
+		"Heroku Local": "https://{{domain5000}}/{{index}}"
+	}
+}
+

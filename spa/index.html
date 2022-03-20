@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf8" />
+		<meta name="viewport" content="width=device-width", initial-scale="1.0" />
+		<title>Single Page App</title>
+		<link rel="stylesheet" href="style/main.css">
+		<script type="module" src="./router.js" defer></script>
+	</head>
+	<body>
+		<aside class="hidden"><p></p></aside>
+		<header>
+			<h1>Single Page App</h1>
+			<p>&nbsp;</p>
+		</header>
+		<nav>
+			<ul>
+				<li><a href="/home">Home</a></li>
+				<li><a href="/register">Register</a></li>
+				<li><a href="/login">Log in</a></li>
+				<li><a href="/addStock">Add Stock</a></li>
+				<li><a href="/logout">Log out</a></li>
+				<li><a href="/restock">Restock</a></li>
+				<li><a href="/received">Received</a></li>
+			</ul>
+		</nav>
+		<main>
+			<article>
+			</article>
+		</main>
+		<footer>
+			<p>&nbsp;</p>
+		</footer>
+	</body>
+
+	<template id="login">
+		<form name="login">
+			<p><label for="email">Username</label><br /><input type="text" name="user" placeholder="username" /></p>
+			<p><label for="pass">Password</label><br /><input type="password" name="pass" placeholder="password" /></p>
+			<p><button type="submit">Log in</button></p>
+		</form>
+	</template>
+	<template id="register">
+		<form name="register">
+			<p><label for="name">Username</label><br /><input type="text" name="user" placeholder="full name" /></p>
+			<p><label for="pass">Password</label><br /><input type="password" name="pass" placeholder="password" /></p>
+			<p><button type="submit">Create account</button></p>
+		</form>
+	</template>
+	<template id="logout">
+			<p>Do you want to log out?</p>
+			<p><button>OK</button><button>Cancel</button></p>
+	</template>
+	<template id="foo">
+		<form name="upload" method="post">
+			<p><label for="pass">Choose a file</label><br /><input type="file" name="file" /></p>
+			<p><button type="submit">Upload</button></p>
+		</form>
+	</template>
+	<template id="quote">
+		<section>
+			<h2></h2>
+			<p></p>
+		</section>
+	</template>
+	<template id="home">
+		<center>
+            <p>Total value of all stock: £ <label id = "totalValue"></label></p>
+
+		<section>
+			<h1>All Stock Items</h1>
+			<table id="content_table">
+
+			</table>
+			</section>
+		</center>
+	</template>
+ 	<template id="addStock">
+        <form name="addStock">
+            <p><label for="productBarcode">Barcode</label><input type="number" name="productBarcode" placeholder="********" autofocus /></p>
+            <p><label for="productName">Product Name</label><input type="text" maxlength="60" name="productName" placeholder="Name of product" value="" /></p>
+            <p><input type="file" id="image" name="image" accept="image/*" /><br /><label for="image"></label><br /><img src="uploads/item-default.jpeg" /></p>
+			<p><label for="wholesaleAmount">Wholesale Price £</label><input type="range" name="wholesaleAmount" value="15" min="1" max="30" /><output name="wholesaleAmount_val">15</output></p>
+			<p><label for="retailAmount">Retail Price £</label><input type="range" name="retailAmount" value="15" min="1" max="30" /><output name="retailAmount_val">15</output></p>
+           		<p><label for="quantity">Quantity</label><input type="range" name="quantity" value="50" min="1" max="100" /><output name="quantity_val">50</output></p>
+            <p><button type="submit">Add Item</button></p>
+        </form>
+	</template>
+<template id="restock">
+		<center>
+		<section>
+			<h1>All Stock Items</h1>
+			<table id="restock_table">
+
+			</table>
+			</section>
+		</center>
+	</template>
+<template id="received">
+		<center>
+
+		<section>
+			<h1>All Stock Items</h1>
+			<table id="received_table">
+
+			</table>
+			</section>
+		</center>
+	</template>
+
+</html>
