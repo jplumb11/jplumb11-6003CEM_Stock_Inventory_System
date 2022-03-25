@@ -28,7 +28,8 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `id` MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `itemId` MEDIUMINT UNSIGNED NOT NULL,
   `quantity` MEDIUMINT UNSIGNED NOT NULL,
-  `requestedUser` VARCHAR(30)
+  `requestedUser` VARCHAR(30),
+  `receivedStatusYN` VARCHAR(4)
 );
 
 ALTER TABLE `stock` ADD FOREIGN KEY (`userid`) REFERENCES `accounts` (`id`);
@@ -46,6 +47,5 @@ INSERT INTO accounts(user, pass)
 
 INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
   VALUES(88888888, "RAM", "/uploads/generic.jpg", 8, 14, 55, "High", 1, "admin");
-
 INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
   VALUES(88888888, "555 Timer", "/uploads/555_microcontroller", 2, 4, 3, "Low", 2, "admin");

@@ -65,7 +65,7 @@ async function addItemDetails(data) {
         } else {
             data.stockLevel = "High";
         }
-        console.log("stock level: ", data.stockLevel)
+        console.log("stock level: ", data.stockLevel) 
         console.log(data)
         const dCheck = `SELECT count(id) AS count FROM stock WHERE productBarcode = "${data.productBarcode}";`
         const duplicateCheck = await db.query(dCheck)
