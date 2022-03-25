@@ -3,7 +3,7 @@ import {saveFile} from './util.js'
 
 
 export async function getOrders(username){
-    let sql = `SELECT * FROM orders;`
+    let sql = `SELECT * FROM orders ORDER BY receivedStatusYN ASC;`
     const result = await db.query(sql)
     for(let i = 0; i < result.length; i++) {
         const order = result[i]
@@ -29,26 +29,21 @@ export async function getReceivedItems(data){
     return result
 }
 
-
-//to update the recieved items 
-export async function updateReceived(data){
-let sql = `SELECT id FROM accounts WHERE user = "${data.username}"`//maybe change this to the item id 
-        let result = await db.query(sql)
-        data.userID = result[0].id
-        //set the stock level to low if its less than 5
-        if(data.quantity <= 5) {
-            data.stockLevel = "Low";
-        } else {
-            data.stockLevel = "High";
-        }
-        const dCheck = `SELECT count(id) AS count FROM stock WHERE productBarcode = "${data.productBarcode}";`
-        const duplicateCheck = await db.query(dCheck)
-    
-        if(duplicateCheck[0].count) {
-            //if duplicate is found update quantity
-            const sql = `UPDATE stock SET quantity = quantity  + ${data.quantity}, stockLevel = IF(quantity <= 5, "High", "Low") WHERE productBarcode = ${data.productBarcode};`
-            console.log("Updating SQl records", sql)
-            await db.query(sql)
-
-
-		}}
+export async function updateReceived(id) {
+    console.log(id)
+    let sql = `UPDATE orders SET receivedStatusYN = TRUE WHERE id = ${id};`
+    await db.query(sql)
+    sql = `SELECT * FROM orders WHERE id = ${id};`
+    const result = await db.query(sql)
+    const order = result[0]
+    console.log(order)
+    sql = `SELECT * FROM stock WHERE id = ${order.itemId};`
+    const items = await db.query(sql)
+    order.item = items[0]
+    sql = `UPDATE stock 
+           SET 
+              quantity = quantity + ${order.quantity},
+              stockLevel = CASE WHEN quantity >= 5 THEN "High" ELSE "Low" END
+           WHERE id = ${order.item.id};`
+    await db.query(sql)
+}

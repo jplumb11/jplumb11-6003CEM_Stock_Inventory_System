@@ -40,7 +40,7 @@ async function showItems(username, table, displayTotal) {
     let addingTesting = ''
     const multiList = []
 json.data.forEach(stock => {
-    const colorClass = stock.isLow ? 'class="red"' : ''
+    const colorClass = stock.stockLevel === "Low" ? 'class="red"' : ''
     content += `<tr><td>${stock.productName}</td><td>${stock.wholesalePrice}</td><td>${stock.retailPrice}</td><td ${colorClass}>${stock.quantity}</td></tr>`
     addingTesting = Number(stock.wholesalePrice) * Number(stock.quantity)
     multiList.push(addingTesting)

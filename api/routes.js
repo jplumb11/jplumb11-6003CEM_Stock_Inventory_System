@@ -176,30 +176,6 @@ router.get('/api/v1/stock/GET/:id', async context => {
 })
 
 
-// router.put('/api/v1/stock/PUT/:id', async context => {
-// 	context.response.headers.set('Allow', 'GET, PUT')
-// 	const query = helpers.getQuery(context, { mergeQuery: true })
-// 	const body  = await context.request.body()
-// 	const data = await body.value
-// 	try {
-// 		await quantityUpdate(data.productBarcode, data.quantity)//check the parameters, may need to be query.id
-// 		const response = { msg: "Updating" }
-// 		context.response.body = JSON.stringify(response, null, 2)
-// 	} catch(err) {
-// 		console.log(err)
-// 		const response = {
-//             errors: [
-//                 {
-//                     title: 'An error occurred',
-//                     detail: err.message
-//                 }
-//             ]
-//         }
-// 		context.response.status = 401
-// 		context.response.body = JSON.stringify(response, null, 2)
-// 	}
-// })
-
 
 //Get route to get low items for restock
 router.get('/api/v1/stock/lowItems/GET', async context => {
@@ -306,7 +282,7 @@ router.get('/api/v1/orders/GET', async context => {
 	}
 
 })
-
+//route to post orders
 router.post('/api/v1/orders/POST', async context => {
 	try {
 		const { value } = context.request.body({ type: 'json'});
@@ -326,7 +302,25 @@ router.post('/api/v1/orders/POST', async context => {
 	console.log("API stock posting")
 })
 
-
+//PUT to update received list
+router.put('/api/v1/orders/PUT/:id', async context => {
+	try {
+		const { value } = context.request.body({ type: 'json'});
+		const data = await value
+		console.log("logging prior to add function")
+		const result = await updateReceived(data.id)
+	}   catch(err) {
+		console.log(err)
+		context.response.status = 400
+		context.response.body = { status: 'error', msg: 'item not added', log: err.message }
+		
+		return	
+	}
+	console.log("Sending Response")
+	context.response.status = 201
+	context.response.body = JSON.stringify(context.response.body = { status: 'added', msg: 'new stock added' }, null, 2)
+	console.log("API stock posting")
+})
 
 //GET  to get one item
 router.get('/api/v1/orders/GET/', async context => {
@@ -352,30 +346,30 @@ router.get('/api/v1/orders/GET/', async context => {
 })
 
 
-router.put('/api/v1/stock/PUT/:id', async context => {
-	context.response.headers.set('Allow', 'GET, PUT')
-	//const query = helpers.getQuery(context, { mergeQuery: true })
-	const body  = await context.request.body()
-	const data = await body.value
-	try {
-		await updateReceived()//check the parameters, may need to be query.id
-		context.response.status = 201
-	    context.response.body = JSON.stringify({ status: 'success', msg: 'account created' })
+// router.put('/api/v1/stock/PUT/:id', async context => {
+// 	context.response.headers.set('Allow', 'GET, PUT')
+// 	//const query = helpers.getQuery(context, { mergeQuery: true })
+// 	const body  = await context.request.body()
+// 	const data = await body.value
+// 	try {
+// 		await updateReceived()//check the parameters, may need to be query.id
+// 		context.response.status = 201
+// 	    context.response.body = JSON.stringify({ status: 'success', msg: 'account created' })
 
-	} catch(err) {
-		console.log(err)
-		const response = {
-            errors: [
-                {
-                    title: 'An error occurred',
-                    detail: err.message
-                }
-            ]
-        }
-		context.response.status = 401
-		context.response.body = JSON.stringify(response, null, 2)
-	}
-})
+// 	} catch(err) {
+// 		console.log(err)
+// 		const response = {
+//             errors: [
+//                 {
+//                     title: 'An error occurred',
+//                     detail: err.message
+//                 }
+//             ]
+//         }
+// 		context.response.status = 401
+// 		context.response.body = JSON.stringify(response, null, 2)
+// 	}
+// })
 
 
 

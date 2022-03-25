@@ -45,6 +45,12 @@ INSERT INTO accounts(user, pass)
 	VALUES("branch2", "$2b$10$gL33obKAFUT5DK3pEbh72OIHztsWBniBBh.PdeKOrF1yr5KFAsdZO");
 
 INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
-  VALUES(88888888, "RAM", "/uploads/generic.jpg", 8, 14, 55, "High", 1, "admin");
+  VALUES(88888888, "RAM", "/uploads/vengeance_RAM.jpeg", 8, 14, 55, "High", 2, "admin");
 INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
   VALUES(88888888, "555 Timer", "/uploads/555_microcontroller", 2, 4, 3, "Low", 2, "admin");
+INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
+  VALUES(13131313, "Ultrasonic Sensor", "/uploads/ultrasonic_sensor.jpeg", 33, 45, 1, "Low", 2, "admin");
+INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
+  VALUES(45454545, "LED", "/uploads/LED_image.jpeg", 1, 3, 80, "Low", 2, "admin");
+  INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
+  VALUES(88888888, "PIC", "/uploads/pic_microcontroller.jpeg", 12, 15, 77, "High", 2, "admin");

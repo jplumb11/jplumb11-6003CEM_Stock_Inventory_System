@@ -7,7 +7,7 @@ export async function setup(node) {
         document.querySelector('header p').innerText = 'Received'
         //const token = localStorage.getItem('authorization')
         if(localStorage.getItem('authorization') === null) window.location = '/login'
-        customiseNavbar(['home', 'logout'])
+        customiseNavbar(['home','restock', 'logout'])
         const table = node.getElementById('received_table')
         await showOrders(username, table)
     } catch (err) {
@@ -38,10 +38,14 @@ async function showOrders(username, table) {
         row.insertCell(1).innerText = allOrders[i].item.wholesalePrice
         row.insertCell(2).innerText = allOrders[i].item.retailPrice
         row.insertCell(3).innerText = allOrders[i].quantity
-        const formCell = row.insertCell(4)
-        const form = makeForm()
-        form.appendChild(makeHiddenInput(allOrders[i].id, 'stockId'))
-        formCell.appendChild(form)
+        const cell = row.insertCell(4)
+        if(allOrders[i].receivedStatusYN === 1) {
+            cell.innerText = 'Received'
+        } else {
+            const form = makeForm()
+            form.appendChild(makeHiddenInput(allOrders[i].id, 'orderId'))
+            cell.appendChild(form)
+        }
     }
 }
 
@@ -49,9 +53,9 @@ async function putOrder(event){
     console.log("Running PUT to update orders")
     event.preventDefault()
     const formData = {
-        itemId: event.target.querySelector('input[name="stockId"]').value
+        id: event.target.querySelector('input[name="orderId"]').value
     }
-    const url = `/api/v1/stock/PUT/:id`
+    const url = `/api/v1/orders/PUT/${formData.id}`
     const options = {
         method: 'PUT',
         headers: {
@@ -64,7 +68,7 @@ async function putOrder(event){
     const json = await response.json()
     console.log(json)
     console.log(response)
-    //reload the page
+    location.reload();
 }
 
 function makeHiddenInput(data, name) {
