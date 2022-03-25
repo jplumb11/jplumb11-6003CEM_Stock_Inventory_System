@@ -29,13 +29,27 @@ async function showLowItems(username, table) {
     const json = await response.json()
     console.log(json)
     console.log(response)
-    let lowFill = `<tr><td>Product Name</td><td>Wholesale Price</td><td>Retail Price</td><td>Quantity</td><td> Increase Quantity</tr>`
-    json.data.forEach(lowStock => {
-        lowFill += `<tr><td>${lowStock.productName}</td><td>${lowStock.wholesalePrice}</td><td>${lowStock.retailPrice}</td><td>${lowStock.quantity}</td><td>${makeForm()}</td></tr>`
-    console.log(lowStock)
-    console.log(lowFill)
-    })
-    table.innerHTML = lowFill /*fill*/
+    const lowStock = json.data
+    for(let i = 0; i < lowStock.length; i++) {
+        const tableIndex = i + 1
+        const row = table.insertRow(tableIndex)
+        row.insertCell(0).innerText = lowStock[i].productName
+        row.insertCell(1).innerText = lowStock[i].wholesalePrice
+        row.insertCell(2).innerText = lowStock[i].retailPrice
+        row.insertCell(3).innerText = lowStock[i].quantity
+        const sliderCell = row.insertCell(4)
+        const form = makeForm()
+        form.appendChild(makeHiddenInput(lowStock[i].id, 'stockId'))
+        sliderCell.appendChild(form)
+    }
+}
+
+function makeHiddenInput(data, name) {
+    const hidden = document.createElement("input")
+    hidden.type = "hidden"
+    hidden.value = data
+    hidden.setAttribute("name", name)
+    return hidden
 }
 
 function makeForm() {
@@ -45,13 +59,13 @@ function makeForm() {
     valueLabel.innerText = 10
     const button = makeButton()
     form.addEventListener('submit', addOrderItem)
-    slider.oninput = function() {
-        valueLabel.value = this.value
-    }
+    slider.addEventListener('input', event => {
+        valueLabel.innerText = slider.value
+    })
     form.appendChild(slider)
     form.appendChild(valueLabel)
     form.appendChild(button)
-    return form.outerHTML
+    return form
 }
 
 function makeButton() {
@@ -76,13 +90,13 @@ async function addOrderItem(event) {
 	
     event.preventDefault()
     const formData = {
-       
+        itemId: event.target.querySelector('input[name="stockId"]').value,
         quantity: event.target.querySelector('input[name="quantity"]').value,
     }
 
     console.log(formData)
     //POST
-    const url = '/api/v1/order/POST'
+    const url = '/api/v1/orders/POST'
     const options = {
         method: 'POST',
         headers: {
@@ -96,7 +110,7 @@ async function addOrderItem(event) {
     const json = await response.json()
     console.log(json)
     showMessage('Form data added')
-    loadPage('home')
+    window.location = '/received'
 }
 
 //  id, itemId, quantity, requestedUser

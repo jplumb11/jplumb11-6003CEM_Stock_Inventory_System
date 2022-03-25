@@ -5,13 +5,19 @@ import {saveFile} from './util.js'
 export async function getOrders(username){
     let sql = `SELECT * FROM orders;`
     const result = await db.query(sql)
+    for(let i = 0; i < result.length; i++) {
+        const order = result[i]
+        sql = `SELECT * FROM stock WHERE id = ${order.itemId};`
+        const items = await db.query(sql)
+        order.item = items[0]
+    }
 	console.log("get low items working")
     return result
 }
 //to add a new order on the restock page
 export async function addOrder(data) {
-    data.receivedStatusYN = "No"
-    const sql = `INSERT INTO orders(itemId, quantity, requestedUser, receivedStatusYN) VALUES (${data.itemId}, ${data.quantity}, ${data.requestedUser}, ${data.receivedStatusYN}");`
+    data.receivedStatusYN = false
+    const sql = `INSERT INTO orders(itemId, quantity, receivedStatusYN) VALUES (${data.itemId}, ${data.quantity}, ${data.receivedStatusYN});`
     await db.query(sql)
 }
 
@@ -43,3 +49,6 @@ let sql = `SELECT id FROM accounts WHERE user = "${data.username}"`//maybe chang
             const sql = `UPDATE stock SET quantity = quantity  + ${data.quantity}, stockLevel = IF(quantity <= 5, "High", "Low") WHERE productBarcode = ${data.productBarcode};`
             console.log("Updating SQl records", sql)
             await db.query(sql)
+
+
+		}}

@@ -53,39 +53,6 @@ router.post('/api/accounts', async context => {
 	context.response.body = JSON.stringify({ status: 'success', msg: 'account created' })
 })
 
-router.post('/api/files', async context => {
-	console.log('POST /api/files')
-	try {
-		const token = context.request.headers.get('Authorization')
-		console.log(`auth: ${token}`)
-		const body  = await context.request.body()
-		const data = await body.value
-		console.log(data)
-		saveFile(data.base64, data.user)
-		context.response.status = 201
-		context.response.body = JSON.stringify(
-			{
-				data: {
-					message: 'file uploaded'
-				}
-			}
-		)
-	} catch(err) {
-		context.response.status = 400
-		context.response.body = JSON.stringify(
-			{
-				errors: [
-					{
-						title: 'a problem occurred',
-						detail: err.message
-					}
-				]
-			}
-		)
-	}
-})
-
-
 //for add stock
 router.post('/api/v1/stock/POST', async context => {
 	console.log('POST /api/v1/stock/POST')
@@ -97,7 +64,6 @@ router.post('/api/v1/stock/POST', async context => {
        if(!token) throw new Error('missing Authorization header')
        const credentials = extractCredentials(token)
        user = await login(credentials)
-      
     } catch(err) {
 		context.response.status = 400
 		context.response.body = JSON.stringify(
@@ -123,7 +89,6 @@ router.post('/api/v1/stock/POST', async context => {
 		console.log(err)
 		context.response.status = 400
 		context.response.body = { status: 'error', msg: 'item not added', log: err.message }
-		
 		return	
 	}
 	console.log("Sending Response")
@@ -131,9 +96,6 @@ router.post('/api/v1/stock/POST', async context => {
 	context.response.body = JSON.stringify(context.response.body = { status: 'added', msg: 'new stock added' }, null, 2)
 	console.log("API stock posting")
 })
-
-
-
 
 //home page
 
@@ -296,86 +258,61 @@ router.get('/api/v1/stock/lowItems/GET', async context => {
 
 //api/v1//showOrders/GET
 
-// //Get route to get low items for restock
-// router.get('/api/v1/orders/showOrders/GET', async context => {
-// 		const host = context.request.url.host
-// 		let user = null
-// 	try {
-//        const token = context.request.headers.get('Authorization')
-//        if(!token) throw new Error('missing Authorization header')
-//        const credentials = extractCredentials(token)
-//        user = await login(credentials)
-      
-//     } catch(err){
-//         context.response.status = 401
-//         context.response.body = { status: 'unauthorised', msg: 'Basic Auth required', log: err.message}
-//         console.log(err)
-// 		return   
-// 	}
-// 	try {
-// 		console.log(user)
-// 		const allOrders = await getOrders(user.username)//gets all records
-// 		const data = {
-//             name: '',
-//             description: 'a list of low stock items',
-//             schema: {
-//                 itemId: 'integer',
-// 				quantity: 'integer',
-// 				requestedUser: 'string'
-
-
-//             },
-//             links: [
-//                 {
-//                     href:`https://${host}/api/v1/stock/lowItems/GET`,
-//                     rel: "self",
-//                     type: "GET"
-//                 }
-//             ],
-//             data: allOrders
-//         }
-		
-// 		context.response.status = 200
-// 		context.response.body = { status: 'success', data: allOrders }
-// 		console.log("getLowItems  being called ")
-
-// 	}catch (err){
-// 		console.log(err)
-// 	}
-
-// })
-
-router.post('/api/v1/orders/POST', async context => {
-	let user = null
+//Get route to get low items for restock
+router.get('/api/v1/orders/GET', async context => {
+		const host = context.request.url.host
+		let user = null
 	try {
-       const token = context.request.headers.get('Authorization')//check auth
-	   console.log(`auth: ${token}`)
-
+       const token = context.request.headers.get('Authorization')
        if(!token) throw new Error('missing Authorization header')
        const credentials = extractCredentials(token)
        user = await login(credentials)
       
-    } catch(err) {
-		context.response.status = 400
-		context.response.body = JSON.stringify(
-			{
-				errors: [
-					{
-						title: 'a problem occurred',
-						detail: err.message
-					}
-				]
-			}
-		)
-        
-    }
-	//valid credentials
+    } catch(err){
+        context.response.status = 401
+        context.response.body = { status: 'unauthorised', msg: 'Basic Auth required', log: err.message}
+        console.log(err)
+		return   
+	}
+	try {
+		console.log(user)
+		const allOrders = await getOrders(user.username)//gets all records
+		const data = {
+            name: '',
+            description: 'a list of low stock items',
+            schema: {
+                itemId: 'integer',
+				quantity: 'integer',
+				requestedUser: 'string'
+
+
+            },
+            links: [
+                {
+                    href:`https://${host}/api/v1/stock/lowItems/GET`,
+                    rel: "self",
+                    type: "GET"
+                }
+            ],
+            data: allOrders
+        }
+		
+		context.response.status = 200
+		context.response.body = { status: 'success', data: allOrders }
+		console.log("getLowItems  being called ")
+
+	}catch (err){
+		console.log(err)
+	}
+
+})
+
+router.post('/api/v1/orders/POST', async context => {
 	try {
 		const { value } = context.request.body({ type: 'json'});
 		const data = await value
-		data.username = user
 		console.log("logging prior to add function")
-		const result = await addOrder(data)//needs definition
+		const result = await addOrder(data)
 	}   catch(err) {
 		console.log(err)
 		context.response.status = 400

@@ -28,8 +28,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `id` MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `itemId` MEDIUMINT UNSIGNED NOT NULL,
   `quantity` MEDIUMINT UNSIGNED NOT NULL,
-  `requestedUser` VARCHAR(30),
-  `receivedStatusYN` VARCHAR(4)
+  `receivedStatusYN` BOOLEAN
 );
 
 ALTER TABLE `stock` ADD FOREIGN KEY (`userid`) REFERENCES `accounts` (`id`);
