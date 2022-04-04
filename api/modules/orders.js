@@ -1,6 +1,6 @@
 import { db } from './db.js'
 import {saveFile} from './util.js'
-
+import {validateOrderSchema} from './schemas/orderSchema.js'
 
 export async function getOrders(username){
     let sql = `SELECT * FROM orders ORDER BY receivedStatusYN ASC;`
@@ -16,6 +16,9 @@ export async function getOrders(username){
 }
 //to add a new order on the restock page
 export async function addOrder(data) {
+    const validationCheck =validateOrderSchema(data)
+    if (validationCheck ===false) throw new Error("Data invalid through schema")
+
     data.receivedStatusYN = false
     const sql = `INSERT INTO orders(itemId, quantity, receivedStatusYN) VALUES (${data.itemId}, ${data.quantity}, ${data.receivedStatusYN});`
     await db.query(sql)

@@ -1,18 +1,17 @@
-import Ajv from 'https://esm.sh/ajv'
-// import Ajv from './ajv.js'
+import Ajv from './ajv.js'
 
 const ajv = new Ajv({allErrors: true})
 
 export const stockSchema = ajv.compile ({
 	$schema: "https://json-schema.org/draft/2020-12/schema",
-	$id: "https://json-schema.org/draft/2020-12/schema",
+    $id: "https://json-schema.org/draft/2020-12/schema",
     title: "Stock",
     description: " Stock item for an Arduino Microcontrollers buisiness system ",
     type: "object",
     properties: {
         productBarcode: {
             type: "integer",
-            description: "The product's 5-digit barcode",
+            description: "The items 8 digit barcode",
             minimum: 10000000,
             maximum: 99999999
         },
@@ -24,9 +23,8 @@ export const stockSchema = ajv.compile ({
         },
         productPhoto: {
             type: "string",
-            description: "Filename of the product's photo saved on the server",
+            description: "Name of the photo",
             minLength: 1,
-			maxLength: 40
 
         },
         wholesalePrice: {
@@ -78,14 +76,8 @@ export const stockSchema = ajv.compile ({
     ]
 })
 const validate = ajv.compile(stockSchema)
-
-const obj = {
-    stock: 'abc'
+//check with mark again
+export const validateStockSchema = (json) => {
+    const validationCheck = validate(json)
+    if (validationCheck === false) console.log(validate.errors)
 }
-
-const valid = validate(obj)
-
-console.log(`valid: ${valid}`)
-if(valid === false) console.log(validate.errors)
-
-export const validStock = ajv.compile(stockSchema)

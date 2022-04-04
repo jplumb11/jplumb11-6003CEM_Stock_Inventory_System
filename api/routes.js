@@ -4,8 +4,8 @@ import { extractCredentials, saveFile } from './modules/util.js'
 import { login, register } from './modules/accounts.js'
 import { add, getAll, getOneItem, quantityUpdate, getLowItems} from './modules/newItems.js'
 import {getOrders, addOrder, getReceivedItems, updateReceived} from './modules/orders.js'
-
-// import { validStock } from './schema/apischema.js'
+import { stockSchema } from './schemas/stockSchema.js'
+import { orderSchema } from './schemas/orderSchema.js'
 
 const router = new Router()
 
@@ -282,7 +282,7 @@ router.get('/api/v1/orders/GET', async context => {
 	}
 
 })
-//route to post orders
+//route to post the orders
 router.post('/api/v1/orders/POST', async context => {
 	try {
 		const { value } = context.request.body({ type: 'json'});
@@ -344,34 +344,6 @@ router.get('/api/v1/orders/GET/', async context => {
 		context.response.body = JSON.stringify(response, null, 2)
 	}
 })
-
-
-// router.put('/api/v1/stock/PUT/:id', async context => {
-// 	context.response.headers.set('Allow', 'GET, PUT')
-// 	//const query = helpers.getQuery(context, { mergeQuery: true })
-// 	const body  = await context.request.body()
-// 	const data = await body.value
-// 	try {
-// 		await updateReceived()//check the parameters, may need to be query.id
-// 		context.response.status = 201
-// 	    context.response.body = JSON.stringify({ status: 'success', msg: 'account created' })
-
-// 	} catch(err) {
-// 		console.log(err)
-// 		const response = {
-//             errors: [
-//                 {
-//                     title: 'An error occurred',
-//                     detail: err.message
-//                 }
-//             ]
-//         }
-// 		context.response.status = 401
-// 		context.response.body = JSON.stringify(response, null, 2)
-// 	}
-// })
-
-
 
 router.get("/(.*)", async context => {      
 // 	const data = await Deno.readTextFile('static/404.html')

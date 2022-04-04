@@ -1,3 +1,4 @@
+-- stock.sql
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS stock;
 DROP TABLE IF EXISTS accounts;

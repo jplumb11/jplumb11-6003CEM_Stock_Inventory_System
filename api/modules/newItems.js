@@ -1,6 +1,7 @@
 // New Items.
 import {db} from './db.js'
 import {saveFile} from './util.js'
+import {validateStockSchema} from './schemas/stockSchema.js'
 //add data 
 export async function add(data) {
     const image = {
@@ -65,6 +66,8 @@ async function addItemDetails(data) {
         } else {
             data.stockLevel = "High";
         }
+        const validationCheck = validateStockSchema(data)
+        if (validationCheck ===false) throw new Error("Data invalid through schema")
         console.log("stock level: ", data.stockLevel) 
         console.log(data)
         const dCheck = `SELECT count(id) AS count FROM stock WHERE productBarcode = "${data.productBarcode}";`
