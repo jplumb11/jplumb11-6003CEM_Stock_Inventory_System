@@ -74,7 +74,7 @@ async function addStockItem(event) {
     }
     console.log(formData)
     //POST
-    const url = '/api/v1/stock/POST'
+    const url = '/api/v1/stock'
     const options = {
         method: 'POST',
         headers: {

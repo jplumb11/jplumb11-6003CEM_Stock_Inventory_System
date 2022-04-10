@@ -1,6 +1,6 @@
 import { db } from './db.js'
 import {saveFile} from './util.js'
-import {validateOrderSchema} from './schemas/orderSchema.js'
+import {validateOrderSchema} from '../schemas/orderSchema.js'
 
 export async function getOrders(username){
     let sql = `SELECT * FROM orders ORDER BY receivedStatusYN ASC;`
@@ -11,26 +11,28 @@ export async function getOrders(username){
         const items = await db.query(sql)
         order.item = items[0]
     }
-	console.log("get low items working")
+    console.log(result)
+    return result
+}
+
+
+//to get all items being sent to the received page
+export async function getReceivedItems(data){
+   let sql = `SELECT * FROM orders WHERE receivedStatusYN = "No";`
+    const result = await db.query(sql)
+    console.log(result)
     return result
 }
 //to add a new order on the restock page
 export async function addOrder(data) {
-    const validationCheck =validateOrderSchema(data)
-    if (validationCheck ===false) throw new Error("Data invalid through schema")
+    // const validationCheck =validateOrderSchema(data)
+    // if (validationCheck ===false) throw new Error("Data invalid through schema")
 
     data.receivedStatusYN = false
     const sql = `INSERT INTO orders(itemId, quantity, receivedStatusYN) VALUES (${data.itemId}, ${data.quantity}, ${data.receivedStatusYN});`
     await db.query(sql)
 }
 
-//to get all items being sent to the received page
-export async function getReceivedItems(data){
-   let sql = `SELECT * FROM orders WHERE receivedStatusYN = "No";`
-    const result = await db.query(sql)
-	console.log("get low items working")
-    return result
-}
 
 export async function updateReceived(id) {
     console.log(id)

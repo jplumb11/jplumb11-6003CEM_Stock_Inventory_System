@@ -17,7 +17,7 @@ export async function setup(node) {
 }
 async function showLowItems(username, table) {
     console.log("Running show low items")
-    const url = `/api/v1/stock/lowItems/GET`
+    const url = `/api/v1/stock/lowItems`
     const options = {
         method: 'GET',
         headers: {
@@ -96,7 +96,7 @@ async function addOrderItem(event) {
 
     console.log(formData)
     //POST
-    const url = '/api/v1/orders/POST'
+    const url = '/api/v1/orders'
     const options = {
         method: 'POST',
         headers: {

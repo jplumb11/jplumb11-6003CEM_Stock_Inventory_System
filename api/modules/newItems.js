@@ -1,7 +1,7 @@
 // New Items.
 import {db} from './db.js'
 import {saveFile} from './util.js'
-import {validateStockSchema} from './schemas/stockSchema.js'
+import {validateStockSchema} from '../schemas/stockSchema.js'
 //add data 
 export async function add(data) {
     const image = {
@@ -93,9 +93,8 @@ async function addItemDetails(data) {
 }
 
 export async function getLowItems(username){
-    let sql = `SELECT * FROM stock WHERE stockLevel = "Low";`
+    let sql = `SELECT * FROM stock WHERE quantity <= 5;`
     const result = await db.query(sql)
 	console.log("get low items working")
-
     return result
 }

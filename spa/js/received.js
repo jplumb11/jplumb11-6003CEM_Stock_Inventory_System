@@ -3,6 +3,8 @@ import {customiseNavbar,file2DataURI,loadPage, secureGet,showMessage} from '../u
 
 export async function setup(node) {
     try {
+                console.log("received setup script")
+
         const username = localStorage.getItem('username')
         document.querySelector('header p').innerText = 'Received'
         //const token = localStorage.getItem('authorization')
@@ -18,7 +20,7 @@ export async function setup(node) {
 
 async function showOrders(username, table) {
     console.log("Running show orders")
-    const url = `/api/v1/orders/GET`
+    const url = `/api/v1/orders`
     const options = {
         method: 'GET',
         headers: {
@@ -55,7 +57,7 @@ async function putOrder(event){
     const formData = {
         id: event.target.querySelector('input[name="orderId"]').value
     }
-    const url = `/api/v1/orders/PUT/${formData.id}`
+    const url = `/api/v1/orders/${formData.id}`
     const options = {
         method: 'PUT',
         headers: {

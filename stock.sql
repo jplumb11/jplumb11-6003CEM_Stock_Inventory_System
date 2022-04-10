@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS `stock` (
 );
 
 
-
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   `itemId` MEDIUMINT UNSIGNED NOT NULL,
@@ -48,10 +47,10 @@ INSERT INTO accounts(user, pass)
 INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
   VALUES(88888888, "RAM", "/uploads/vengeance_RAM.jpeg", 8, 14, 55, "High", 2, "admin");
 INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
-  VALUES(88888888, "555 Timer", "/uploads/555_microcontroller", 2, 4, 3, "Low", 2, "admin");
+   VALUES(88888888, "555 Timer", "/uploads/555_microcontroller", 2, 4, 3, "Low", 2, "admin");
 INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
   VALUES(13131313, "Ultrasonic Sensor", "/uploads/ultrasonic_sensor.jpeg", 33, 45, 1, "Low", 2, "admin");
 INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
-  VALUES(45454545, "LED", "/uploads/LED_image.jpeg", 1, 3, 80, "Low", 2, "admin");
-  INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
+    VALUES(45454545, "LED", "/uploads/LED_image.jpeg", 1, 3, 80, "Low", 2, "admin");
+INSERT INTO stock(productBarcode, productName, productPhoto, wholesalePrice, retailPrice, quantity, stockLevel, userid, username)
   VALUES(65746352, "PIC", "/uploads/pic_microcontroller.jpeg", 12, 15, 77, "High", 2, "admin");

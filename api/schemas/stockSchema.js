@@ -2,7 +2,7 @@ import Ajv from './ajv.js'
 
 const ajv = new Ajv({allErrors: true})
 
-export const stockSchema = ajv.compile ({
+export const stockSchema = {
 	$schema: "https://json-schema.org/draft/2020-12/schema",
     $id: "https://json-schema.org/draft/2020-12/schema",
     title: "Stock",
@@ -74,10 +74,10 @@ export const stockSchema = ajv.compile ({
 		"userid",
 		"username"
     ]
-})
-const validate = ajv.compile(stockSchema)
+}
+// const validate = ajv.compile(stockSchema)
 //check with mark again
 export const validateStockSchema = (json) => {
-    const validationCheck = validate(json)
-    if (validationCheck === false) console.log(validate.errors)
+    // const validationCheck = validate(json)
+    // if (validationCheck === false) console.log(validate.errors)
 }

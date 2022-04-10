@@ -16,7 +16,7 @@ router.get('/', async context => {
 	context.response.body = data
 })
 
-router.get('/api/accounts', async context => {
+router.get('/api/v1/accounts', async context => {
 	console.log('GET /api/accounts')
 	const token = context.request.headers.get('Authorization')
 	console.log(`auth: ${token}`)
@@ -25,9 +25,10 @@ router.get('/api/accounts', async context => {
 		console.log(credentials)
 		const username = await login(credentials)
 		console.log(`username: ${username}`)
+		context.response.status = 200
 		context.response.body = JSON.stringify(
 			{
-				data: { username }
+				data: { username: username }
 			}, null, 2)
 	} catch(err) {
 		context.response.status = 401
@@ -44,7 +45,7 @@ router.get('/api/accounts', async context => {
 	}
 })
 
-router.post('/api/accounts', async context => {
+router.post('/api/v1/accounts', async context => {
 	const body  = await context.request.body()
 	const data = await body.value
 	console.log(data)
@@ -54,7 +55,7 @@ router.post('/api/accounts', async context => {
 })
 
 //for add stock
-router.post('/api/v1/stock/POST', async context => {
+router.post('/api/v1/stock', async context => {
 	console.log('POST /api/v1/stock/POST')
 	let user = null
 	try {
@@ -99,7 +100,7 @@ router.post('/api/v1/stock/POST', async context => {
 
 //home page
 
-router.get('/api/v1/stock/GET', async context => {
+router.get('/api/v1/stock', async context => {
 	console.log("/api/v1/stock/GET")
 	const host = context.request.url.host
 	let user = null
@@ -134,7 +135,7 @@ router.get('/api/v1/stock/GET', async context => {
             },
             links: [
                 {
-                    href:`https://${host}/api/v1/stock/GET`,
+                    href:`https://${host}/api/v1/stock`,
                     rel: "self",
                     type: "GET"
                 }
@@ -152,33 +153,8 @@ router.get('/api/v1/stock/GET', async context => {
 
 })
 
-//GET  to get one item
-router.get('/api/v1/stock/GET/:id', async context => {
-	console.log('GET /api/v1/stock/GET/:id')
-	context.response.headers.set('Allow', 'GET, PUT')
-	const query = helpers.getQuery(context, { mergeQuery: true })
-	try {
-		const stockItem = await getOneItem(query.id)
-		const response = { data: stockItem }
-		context.response.body = JSON.stringify(response, null, 2)
-	} catch(err) {
-		const response = {
-            errors: [
-                {
-                    title: 'An error occurred',
-                    detail: err.message
-                }
-            ]
-        }
-		context.response.status = 401
-		context.response.body = JSON.stringify(response, null, 2)
-	}
-})
-
-
-
 //Get route to get low items for restock
-router.get('/api/v1/stock/lowItems/GET', async context => {
+router.get('/api/v1/stock/lowItems', async context => {
 		const host = context.request.url.host
 		let user = null
 	try {
@@ -212,7 +188,7 @@ router.get('/api/v1/stock/lowItems/GET', async context => {
             },
             links: [
                 {
-                    href:`https://${host}/api/v1/stock/lowItems/GET`,
+                    href:`https://${host}/api/v1/stock/lowItems`,
                     rel: "self",
                     type: "GET"
                 }
@@ -231,11 +207,33 @@ router.get('/api/v1/stock/lowItems/GET', async context => {
 })
 
 
+//GET  to get one item
+router.get('/api/v1/stock/:id', async context => {
+	console.log('GET /api/v1/stock/GET/:id lol')
+	context.response.headers.set('Allow', 'GET, PUT')
+	const query = helpers.getQuery(context, { mergeQuery: true })
+	try {
+		const stockItem = await getOneItem(query.id)
+		const response = { data: stockItem }
+		context.response.body = JSON.stringify(response, null, 2)
+	} catch(err) {
+		const response = {
+            errors: [
+                {
+                    title: 'An error occurred',
+                    detail: err.message
+                }
+            ]
+        }
+		context.response.status = 401
+		context.response.body = JSON.stringify(response, null, 2)
+	}
+})
 
 //api/v1//showOrders/GET
 
 //Get route to get low items for restock
-router.get('/api/v1/orders/GET', async context => {
+router.get('/api/v1/orders', async context => {
 		const host = context.request.url.host
 		let user = null
 	try {
@@ -255,17 +253,16 @@ router.get('/api/v1/orders/GET', async context => {
 		const allOrders = await getOrders(user.username)//gets all records
 		const data = {
             name: '',
-            description: 'a list of low stock items',
+            description: 'getting all orders',
             schema: {
                 itemId: 'integer',
 				quantity: 'integer',
-				requestedUser: 'string'
-
+				receivedStatusYN: 'string'
 
             },
             links: [
                 {
-                    href:`https://${host}/api/v1/stock/lowItems/GET`,
+                    href:`https://${host}/api/v1/orders`,
                     rel: "self",
                     type: "GET"
                 }
@@ -282,8 +279,8 @@ router.get('/api/v1/orders/GET', async context => {
 	}
 
 })
-//route to post the orders
-router.post('/api/v1/orders/POST', async context => {
+//route to post the order
+router.post('/api/v1/orders', async context => {
 	try {
 		const { value } = context.request.body({ type: 'json'});
 		const data = await value
@@ -303,7 +300,8 @@ router.post('/api/v1/orders/POST', async context => {
 })
 
 //PUT to update received list
-router.put('/api/v1/orders/PUT/:id', async context => {
+router.put('/api/v1/orders/:id', async context => {
+	console.log("/api/v1//orders/PUT/:id")
 	try {
 		const { value } = context.request.body({ type: 'json'});
 		const data = await value
@@ -316,14 +314,12 @@ router.put('/api/v1/orders/PUT/:id', async context => {
 		
 		return	
 	}
-	console.log("Sending Response")
 	context.response.status = 201
 	context.response.body = JSON.stringify(context.response.body = { status: 'added', msg: 'new stock added' }, null, 2)
-	console.log("API stock posting")
 })
 
 //GET  to get one item
-router.get('/api/v1/orders/GET/', async context => {
+router.get('/api/v1/orders', async context => {
 	console.log('GET /api/v1/orders/GET/')
 	context.response.headers.set('Allow', 'GET, PUT')
 	const query = helpers.getQuery(context, { mergeQuery: true })
