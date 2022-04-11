@@ -3,8 +3,6 @@ import Ajv from './ajv.js'
 const ajv = new Ajv({allErrors: true})
 
 export const stockSchema = {
-	$schema: "https://json-schema.org/draft/2020-12/schema",
-    $id: "https://json-schema.org/draft/2020-12/schema",
     title: "Stock",
     description: " Stock item for an Arduino Microcontrollers buisiness system ",
     type: "object",
@@ -51,7 +49,7 @@ export const stockSchema = {
             minLength: 3,
             maxLength: 4
         },
-		  userid: {
+		  userID: {
             type: "integer",
             description: "The user identification number of the user that added the current item",
             minimum: 1
@@ -66,18 +64,18 @@ export const stockSchema = {
     required: [
         "productBarcode", 
         "productName", 
-        "productPhoto", 
         "wholesalePrice", 
         "retailPrice",
         "quantity",
 		"stockLevel",
-		"userid",
+		"userID",
 		"username"
     ]
 }
-// const validate = ajv.compile(stockSchema)
+const validate = ajv.compile(stockSchema)
 //check with mark again
 export const validateStockSchema = (json) => {
-    // const validationCheck = validate(json)
-    // if (validationCheck === false) console.log(validate.errors)
+    const validationCheck = validate(json)
+    if (validationCheck === false) console.log(validate.errors)
+    return validationCheck
 }

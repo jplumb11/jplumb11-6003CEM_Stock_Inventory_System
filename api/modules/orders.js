@@ -18,10 +18,12 @@ export async function getOrders(username){
 
 //to add a new order on the restock page
 export async function addOrder(data) {
-    // const validationCheck =validateOrderSchema(data)
-    // if (validationCheck ===false) throw new Error("Data invalid through schema")
-
     data.receivedStatusYN = false
+    data.itemId = parseInt(data.itemId)
+    data.quantity = parseInt(data.quantity)
+    const validationCheck =validateOrderSchema(data)
+    console.log(validationCheck, data)
+    if (validationCheck ===false) throw new Error("Data invalid through schema")
     const sql = `INSERT INTO orders(itemId, quantity, receivedStatusYN) VALUES (${data.itemId}, ${data.quantity}, ${data.receivedStatusYN});`
     await db.query(sql)
 }

@@ -9,7 +9,7 @@ export async function setup(node) {
         document.querySelector('header p').innerText = 'Received'
         //const token = localStorage.getItem('authorization')
         if(localStorage.getItem('authorization') === null) window.location = '/login'
-        customiseNavbar(['home','restock', 'logout'])
+        customiseNavbar(['home','restock','received', 'logout'])
         const table = node.getElementById('received_table')
         await showOrders(username, table)
     } catch (err) {

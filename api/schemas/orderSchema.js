@@ -32,11 +32,12 @@ export const orderSchema = {
     ]
 }
 
-// const validate = ajv.compile(orderSchema)
+const validate = ajv.compile(orderSchema)
 
 //check with mark again
 
 export const validateOrderSchema = (json) => {
-    // const validationCheck = validate(json)
-    // if (validationCheck === false) console.log(validate.errors)
+    const validationCheck = validate(json)
+    if (validationCheck === false) console.log(validate.errors)
+    return validationCheck
 }

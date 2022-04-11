@@ -66,7 +66,12 @@ async function addItemDetails(data) {
         } else {
             data.stockLevel = "High";
         }
+        data.productBarcode = parseInt(data.productBarcode)
+        data.wholesalePrice = parseInt(data.wholesalePrice)
+        data.retailPrice = parseInt(data.retailPrice)
+        data.quantity = parseInt(data.quantity)
         const validationCheck = validateStockSchema(data)
+        console.log(validationCheck, data)
         if (validationCheck ===false) throw new Error("Data invalid through schema")
         console.log("stock level: ", data.stockLevel) 
         console.log(data)
