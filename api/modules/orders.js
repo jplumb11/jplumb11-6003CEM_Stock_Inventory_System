@@ -3,7 +3,7 @@ import {saveFile} from './util.js'
 import {validateOrderSchema} from '../schemas/orderSchema.js'
 
 export async function getOrders(username){
-    let sql = `SELECT * FROM orders ORDER BY receivedStatusYN ASC;`
+    let sql = `SELECT * FROM orders WHERE receivedStatusYN = "No" ORDER BY receivedStatusYN ASC;`
     const result = await db.query(sql)
     for(let i = 0; i < result.length; i++) {
         const order = result[i]
@@ -16,13 +16,6 @@ export async function getOrders(username){
 }
 
 
-//to get all items being sent to the received page
-export async function getReceivedItems(data){
-   let sql = `SELECT * FROM orders WHERE receivedStatusYN = "No";`
-    const result = await db.query(sql)
-    console.log(result)
-    return result
-}
 //to add a new order on the restock page
 export async function addOrder(data) {
     // const validationCheck =validateOrderSchema(data)

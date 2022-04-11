@@ -3,7 +3,7 @@ import {customiseNavbar,file2DataURI,loadPage, secureGet,showMessage} from '../u
 
 export async function setup(node) {
     try {
-                console.log("received setup script")
+            console.log("received setup script")
 
         const username = localStorage.getItem('username')
         document.querySelector('header p').innerText = 'Received'

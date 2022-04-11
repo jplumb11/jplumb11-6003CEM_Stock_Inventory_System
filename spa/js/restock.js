@@ -8,7 +8,7 @@ export async function setup(node) {
         document.querySelector('header p').innerText = 'Restock'
         //const token = localStorage.getItem('authorization')
         if(localStorage.getItem('authorization') === null) window.location = '/login'
-        customiseNavbar(['home', 'logout'])
+        customiseNavbar(['home','restock', 'received','logout'])
         const table = node.getElementById('restock_table')
         await showLowItems(username, table)
     } catch (err) {
